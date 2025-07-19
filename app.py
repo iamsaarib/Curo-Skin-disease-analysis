@@ -3,13 +3,27 @@ from transformers import AutoModelForImageClassification, AutoImageProcessor
 from PIL import Image
 import torch
 
-# Set the title of the application
-st.title("Curo 🌿")
-st.write(
-    "Upload an image of the affected skin area, and the app will classify the disease and provide detailed analysis."
+# Page configuration
+st.set_page_config(page_title="Curo 🌿 - Skin Disease Classifier", layout="centered")
+
+# Sidebar
+st.sidebar.title("Why Curo?")
+st.sidebar.info(
+    "Curo is your AI-powered skin health companion 🧠🌿.\n\n"
+    "It helps you quickly identify possible skin conditions by analyzing uploaded images. "
+    "Whether you're dealing with irritation, rashes, or unexplained marks — Curo gives you a starting point, "
+    "along with likely causes, treatment suggestions, and soothing home remedies.\n\n"
+    "This is not a replacement for a doctor, but it can guide you to seek help early and stay informed."
 )
 
-# Cache model and processor loading
+
+# Main Header
+st.markdown("<h1 style='text-align: center;'>🌿 Curo – Skin Disease Classifier</h1>", unsafe_allow_html=True)
+st.write("Upload an image of the affected skin area, and the app will classify the disease and provide analysis.")
+
+st.markdown("---")  # horizontal line
+
+# Load model & processor
 @st.cache_resource
 def load_model():
     repo_name = "Jayanth2002/dinov2-base-finetuned-SkinDisease"
@@ -18,6 +32,8 @@ def load_model():
     return model, processor
 
 model, processor = load_model()
+# Ensure the model is in evaluation mode
+model.eval()
 
 # Define the class names
 class_names = [
@@ -222,3 +238,13 @@ if uploaded_file is not None:
     st.write(f"**Treatment**: {treatment}")
     st.write(f"**Home Remedy**: {home_remedy}")
     st.write("**Note:** Please consult a doctor for final recommendations and a detailed treatment plan.")
+
+# Footer
+st.markdown("---")
+st.markdown(
+    "<div style='text-align: center; font-size: 0.9em; color: grey;'>"
+    "Developed by Saarib · Powered by Hugging Face · Still a work in progress 🚧"
+    "</div>",
+    unsafe_allow_html=True
+)
+
